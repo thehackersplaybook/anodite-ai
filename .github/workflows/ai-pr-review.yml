@@ -24,3 +24,4 @@ jobs:
           github-token: ${{ secrets.THP_GITHUB_TOKEN }}
           openai-key: ${{ secrets.OPENAI_API_KEY }}
           gpt-model: gpt-4
+        env: 

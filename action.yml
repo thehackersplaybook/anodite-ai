@@ -1,18 +1,23 @@
-name: 'The name of your action here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'Anodite AI'
+description: 'Automated PR Review'
+author: 'sarvesh bhujle'
 
-# Define your inputs here.
+branding:
+  icon: 'check-circle'
+  color: 'green'
+
+# Expected inputs for the action
 inputs:
-  milliseconds:
-    description: 'Your input description here'
+  openai-key:
+    description: 'OpenAI API key'
     required: true
-    default: '1000'
-
-# Define your outputs here.
-outputs:
-  time:
-    description: 'Your output description here'
+  github-token:
+    description: 'Github token'
+    required: true
+  gpt-model:
+    description: 'Model to use for review. If not provided, defaults to gpt-3.5-turbo.'
+    required: false
+    default: 'gpt-3.5-turbo'
 
 runs:
   using: node20
