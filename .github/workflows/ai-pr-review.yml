@@ -21,6 +21,6 @@ jobs:
         id: ai-peer-review
         uses: ./
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          openai-key: ${{ secrets.OPENAI_KEY }}
+          github-token: ${{ secrets.THP_GITHUB_TOKEN }}
+          openai-key: ${{ secrets.OPENAI_API_KEY }}
           gpt-model: gpt-4
