@@ -3,6 +3,6 @@
  */
 
 import 'dotenv/config'
-import { run } from './main';
+import { run } from './main'
 
-run();
+run()

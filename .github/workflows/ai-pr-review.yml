@@ -12,11 +12,11 @@ permissions:
 jobs:
   peer-review:
     runs-on: ubuntu-latest
-    name: AI Peer review
+    name: Anodite-ai
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      
+
       - name: AI Peer review
         id: ai-peer-review
         uses: ./
@@ -24,4 +24,8 @@ jobs:
           github-token: ${{ secrets.THP_GITHUB_TOKEN }}
           openai-key: ${{ secrets.OPENAI_API_KEY }}
           gpt-model: gpt-4
-        env: 
+
+      - name: Print Debug Info
+        run: |
+          echo "Github Token: ${{ secrets.THP_GITHUB_TOKEN }}"
+          echo "OpenAI API Key: ${{ secrets.OPENAI_API_KEY }}"
