@@ -24,6 +24,8 @@ export async function run(): Promise<void> {
   try {
     console.log('Starting PR review action with GPT model:', GPT_MODEL)
     const pr_context = github.context.payload.pull_request as any;
+    console.log(pr_context);
+    
     // const pr_context = {
     //   action: 'assigned',
     //   title: 'random',

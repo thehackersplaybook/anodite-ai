@@ -249,6 +249,7 @@ function run() {
         try {
             console.log('Starting PR review action with GPT model:', GPT_MODEL);
             const pr_context = github.context.payload.pull_request;
+            console.log(pr_context);
             // const pr_context = {
             //   action: 'assigned',
             //   title: 'random',
