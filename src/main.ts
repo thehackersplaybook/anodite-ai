@@ -200,8 +200,8 @@ export async function run(): Promise<void> {
     //   }
     // }
 
-    if (!pr_context) {
-      throw new Error('Pull request context is not available')
+    if (!pr_context?.pull_request?.base) {
+      throw new Error('Required pull request context is not available');
     }
 
     const pull_request = new PullRequest(pr_context)

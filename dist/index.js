@@ -246,6 +246,7 @@ const GPT_MODEL = core.getInput('gpt-model');
  */
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
+        var _a;
         try {
             console.log('Starting PR review action with GPT model:', GPT_MODEL);
             const pr_context = github.context.payload.pull_request;
@@ -423,8 +424,8 @@ function run() {
             //     html_url: 'https://github.com/dummy-sender'
             //   }
             // }
-            if (!pr_context) {
-                throw new Error('Pull request context is not available');
+            if (!((_a = pr_context === null || pr_context === void 0 ? void 0 : pr_context.pull_request) === null || _a === void 0 ? void 0 : _a.base)) {
+                throw new Error('Required pull request context is not available');
             }
             const pull_request = new pull_request_1.PullRequest(pr_context);
             yield pull_request.getDiffString();
