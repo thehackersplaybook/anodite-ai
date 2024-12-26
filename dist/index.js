@@ -237,6 +237,7 @@ const pull_request_1 = __nccwpck_require__(84);
 const llm_interface_1 = __nccwpck_require__(5398);
 const ai_reviewer_1 = __nccwpck_require__(1685);
 const core = __importStar(__nccwpck_require__(7484));
+const github = __importStar(__nccwpck_require__(3228));
 const OPENAI_KEY = core.getInput('openai-key');
 const GPT_MODEL = core.getInput('gpt-model');
 /**
@@ -247,170 +248,180 @@ function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             console.log('Starting PR review action with GPT model:', GPT_MODEL);
-            // const pr_context = github.context.payload.pull_request as any;
-            const pr_context = {
-                action: 'assigned',
-                title: 'random',
-                body: 'random',
-                assignee: {
-                    login: 'dummy-user',
-                    id: 123456,
-                    node_id: 'MDQ6VXNlcjEyMzQ1Ng==',
-                    avatar_url: 'https://avatars.githubusercontent.com/u/123456?v=4',
-                    gravatar_id: '',
-                    url: 'https://api.github.com/users/dummy-user',
-                    html_url: 'https://github.com/dummy-user',
-                    followers_url: 'https://api.github.com/users/dummy-user/followers',
-                    following_url: 'https://api.github.com/users/dummy-user/following{/other_user}',
-                    gists_url: 'https://api.github.com/users/dummy-user/gists{/gist_id}',
-                    starred_url: 'https://api.github.com/users/dummy-user/starred{/owner}{/repo}',
-                    subscriptions_url: 'https://api.github.com/users/dummy-user/subscriptions',
-                    organizations_url: 'https://api.github.com/users/dummy-user/orgs',
-                    repos_url: 'https://api.github.com/users/dummy-user/repos',
-                    events_url: 'https://api.github.com/users/dummy-user/events{/privacy}',
-                    received_events_url: 'https://api.github.com/users/dummy-user/received_events',
-                    type: 'User',
-                    site_admin: false
-                },
-                number: 42,
-                pull_request: {
-                    _links: {
-                        self: {
-                            href: 'https://api.github.com/repos/dummy-org/dummy-repo/pulls/42'
-                        },
-                        html: {
-                            href: 'https://github.com/dummy-org/dummy-repo/pull/42'
-                        },
-                        issue: {
-                            href: 'https://api.github.com/repos/dummy-org/dummy-repo/issues/42'
-                        },
-                        comments: {
-                            href: 'https://api.github.com/repos/dummy-org/dummy-repo/issues/42/comments'
-                        },
-                        review_comments: {
-                            href: 'https://api.github.com/repos/dummy-org/dummy-repo/pulls/42/comments'
-                        },
-                        review_comment: {
-                            href: 'https://api.github.com/repos/dummy-org/dummy-repo/pulls/comments{/number}'
-                        },
-                        commits: {
-                            href: 'https://api.github.com/repos/dummy-org/dummy-repo/pulls/42/commits'
-                        },
-                        statuses: {
-                            href: 'https://api.github.com/repos/dummy-org/dummy-repo/statuses/dummy-sha'
-                        }
-                    },
-                    active_lock_reason: null,
-                    additions: 15,
-                    assignee: {
-                        login: 'dummy-user',
-                        id: 123456
-                    },
-                    assignees: [
-                        {
-                            login: 'dummy-user',
-                            id: 123456
-                        }
-                    ],
-                    author_association: 'MEMBER',
-                    auto_merge: null,
-                    base: {
-                        ref: 'main',
-                        sha: 'dummy-sha',
-                        repo: {
-                            id: 654321,
-                            owner: {
-                                login: 'random'
-                            },
-                            name: 'dummy-repo',
-                            full_name: 'dummy-org/dummy-repo',
-                            html_url: 'https://github.com/dummy-org/dummy-repo'
-                        }
-                    },
-                    body: 'This is a dummy pull request for testing purposes.',
-                    changed_files: 3,
-                    closed_at: null,
-                    comments: 2,
-                    comments_url: 'https://api.github.com/repos/dummy-org/dummy-repo/issues/42/comments',
-                    commits: 1,
-                    commits_url: 'https://api.github.com/repos/dummy-org/dummy-repo/pulls/42/commits',
-                    created_at: '2024-12-23T00:00:00Z',
-                    deletions: 5,
-                    diff_url: 'https://github.com/dummy-org/dummy-repo/pull/42.diff',
-                    draft: false,
-                    head: {
-                        ref: 'feature-branch',
-                        sha: 'dummy-feature-sha',
-                        repo: {
-                            id: 654321,
-                            name: 'dummy-repo',
-                            full_name: 'dummy-org/dummy-repo',
-                            html_url: 'https://github.com/dummy-org/dummy-repo'
-                        }
-                    },
-                    html_url: 'https://github.com/dummy-org/dummy-repo/pull/42',
-                    id: 987654321,
-                    issue_url: 'https://api.github.com/repos/dummy-org/dummy-repo/issues/42',
-                    labels: [
-                        {
-                            id: 112233,
-                            node_id: 'MDU6TGFiZWwxMTIyMzM=',
-                            url: 'https://api.github.com/repos/dummy-org/dummy-repo/labels/enhancement',
-                            name: 'enhancement',
-                            color: '84b6eb',
-                            default: true,
-                            description: 'New feature or request'
-                        }
-                    ],
-                    locked: false,
-                    maintainer_can_modify: true,
-                    merge_commit_sha: null,
-                    merged: false,
-                    merged_at: null,
-                    merged_by: null,
-                    milestone: null,
-                    node_id: 'MDExOlB1bGxSZXF1ZXN0OTg3NjU0MzIx',
-                    number: 42,
-                    patch_url: 'https://github.com/dummy-org/dummy-repo/pull/42.patch',
-                    rebaseable: true,
-                    requested_reviewers: [
-                        {
-                            login: 'reviewer-user',
-                            id: 789012
-                        }
-                    ],
-                    requested_teams: [],
-                    review_comment_url: 'https://api.github.com/repos/dummy-org/dummy-repo/pulls/comments{/number}',
-                    review_comments: 1,
-                    review_comments_url: 'https://api.github.com/repos/dummy-org/dummy-repo/pulls/42/comments',
-                    state: 'open',
-                    statuses_url: 'https://api.github.com/repos/dummy-org/dummy-repo/statuses/dummy-sha',
-                    title: 'Add new feature for testing',
-                    updated_at: '2024-12-23T00:00:00Z',
-                    url: 'https://api.github.com/repos/dummy-org/dummy-repo/pulls/42',
-                    user: {
-                        login: 'dummy-author',
-                        id: 654321,
-                        node_id: 'MDQ6VXNlcjY1NDMyMQ==',
-                        avatar_url: 'https://avatars.githubusercontent.com/u/654321?v=4',
-                        html_url: 'https://github.com/dummy-author'
-                    }
-                },
-                repository: {
-                    id: 654321,
-                    node_id: 'MDEwOlJlcG9zaXRvcnk2NTQzMjE=',
-                    name: 'dummy-repo',
-                    full_name: 'dummy-org/dummy-repo',
-                    html_url: 'https://github.com/dummy-org/dummy-repo'
-                },
-                sender: {
-                    login: 'dummy-sender',
-                    id: 567890,
-                    node_id: 'MDQ6VXNlcjU2Nzg5MA==',
-                    avatar_url: 'https://avatars.githubusercontent.com/u/567890?v=4',
-                    html_url: 'https://github.com/dummy-sender'
-                }
-            };
+            const pr_context = github.context.payload.pull_request;
+            // const pr_context = {
+            //   action: 'assigned',
+            //   title: 'random',
+            //   body: 'random',
+            //   assignee: {
+            //     login: 'dummy-user',
+            //     id: 123456,
+            //     node_id: 'MDQ6VXNlcjEyMzQ1Ng==',
+            //     avatar_url: 'https://avatars.githubusercontent.com/u/123456?v=4',
+            //     gravatar_id: '',
+            //     url: 'https://api.github.com/users/dummy-user',
+            //     html_url: 'https://github.com/dummy-user',
+            //     followers_url: 'https://api.github.com/users/dummy-user/followers',
+            //     following_url:
+            //       'https://api.github.com/users/dummy-user/following{/other_user}',
+            //     gists_url: 'https://api.github.com/users/dummy-user/gists{/gist_id}',
+            //     starred_url:
+            //       'https://api.github.com/users/dummy-user/starred{/owner}{/repo}',
+            //     subscriptions_url:
+            //       'https://api.github.com/users/dummy-user/subscriptions',
+            //     organizations_url: 'https://api.github.com/users/dummy-user/orgs',
+            //     repos_url: 'https://api.github.com/users/dummy-user/repos',
+            //     events_url: 'https://api.github.com/users/dummy-user/events{/privacy}',
+            //     received_events_url:
+            //       'https://api.github.com/users/dummy-user/received_events',
+            //     type: 'User',
+            //     site_admin: false
+            //   },
+            //   number: 42,
+            //   pull_request: {
+            //     _links: {
+            //       self: {
+            //         href: 'https://api.github.com/repos/dummy-org/dummy-repo/pulls/42'
+            //       },
+            //       html: {
+            //         href: 'https://github.com/dummy-org/dummy-repo/pull/42'
+            //       },
+            //       issue: {
+            //         href: 'https://api.github.com/repos/dummy-org/dummy-repo/issues/42'
+            //       },
+            //       comments: {
+            //         href: 'https://api.github.com/repos/dummy-org/dummy-repo/issues/42/comments'
+            //       },
+            //       review_comments: {
+            //         href: 'https://api.github.com/repos/dummy-org/dummy-repo/pulls/42/comments'
+            //       },
+            //       review_comment: {
+            //         href: 'https://api.github.com/repos/dummy-org/dummy-repo/pulls/comments{/number}'
+            //       },
+            //       commits: {
+            //         href: 'https://api.github.com/repos/dummy-org/dummy-repo/pulls/42/commits'
+            //       },
+            //       statuses: {
+            //         href: 'https://api.github.com/repos/dummy-org/dummy-repo/statuses/dummy-sha'
+            //       }
+            //     },
+            //     active_lock_reason: null,
+            //     additions: 15,
+            //     assignee: {
+            //       login: 'dummy-user',
+            //       id: 123456
+            //     },
+            //     assignees: [
+            //       {
+            //         login: 'dummy-user',
+            //         id: 123456
+            //       }
+            //     ],
+            //     author_association: 'MEMBER',
+            //     auto_merge: null,
+            //     base: {
+            //       ref: 'main',
+            //       sha: 'dummy-sha',
+            //       repo: {
+            //         id: 654321,
+            //         owner: {
+            //           login: 'random'
+            //         },
+            //         name: 'dummy-repo',
+            //         full_name: 'dummy-org/dummy-repo',
+            //         html_url: 'https://github.com/dummy-org/dummy-repo'
+            //       }
+            //     },
+            //     body: 'This is a dummy pull request for testing purposes.',
+            //     changed_files: 3,
+            //     closed_at: null,
+            //     comments: 2,
+            //     comments_url:
+            //       'https://api.github.com/repos/dummy-org/dummy-repo/issues/42/comments',
+            //     commits: 1,
+            //     commits_url:
+            //       'https://api.github.com/repos/dummy-org/dummy-repo/pulls/42/commits',
+            //     created_at: '2024-12-23T00:00:00Z',
+            //     deletions: 5,
+            //     diff_url: 'https://github.com/dummy-org/dummy-repo/pull/42.diff',
+            //     draft: false,
+            //     head: {
+            //       ref: 'feature-branch',
+            //       sha: 'dummy-feature-sha',
+            //       repo: {
+            //         id: 654321,
+            //         name: 'dummy-repo',
+            //         full_name: 'dummy-org/dummy-repo',
+            //         html_url: 'https://github.com/dummy-org/dummy-repo'
+            //       }
+            //     },
+            //     html_url: 'https://github.com/dummy-org/dummy-repo/pull/42',
+            //     id: 987654321,
+            //     issue_url:
+            //       'https://api.github.com/repos/dummy-org/dummy-repo/issues/42',
+            //     labels: [
+            //       {
+            //         id: 112233,
+            //         node_id: 'MDU6TGFiZWwxMTIyMzM=',
+            //         url: 'https://api.github.com/repos/dummy-org/dummy-repo/labels/enhancement',
+            //         name: 'enhancement',
+            //         color: '84b6eb',
+            //         default: true,
+            //         description: 'New feature or request'
+            //       }
+            //     ],
+            //     locked: false,
+            //     maintainer_can_modify: true,
+            //     merge_commit_sha: null,
+            //     merged: false,
+            //     merged_at: null,
+            //     merged_by: null,
+            //     milestone: null,
+            //     node_id: 'MDExOlB1bGxSZXF1ZXN0OTg3NjU0MzIx',
+            //     number: 42,
+            //     patch_url: 'https://github.com/dummy-org/dummy-repo/pull/42.patch',
+            //     rebaseable: true,
+            //     requested_reviewers: [
+            //       {
+            //         login: 'reviewer-user',
+            //         id: 789012
+            //       }
+            //     ],
+            //     requested_teams: [],
+            //     review_comment_url:
+            //       'https://api.github.com/repos/dummy-org/dummy-repo/pulls/comments{/number}',
+            //     review_comments: 1,
+            //     review_comments_url:
+            //       'https://api.github.com/repos/dummy-org/dummy-repo/pulls/42/comments',
+            //     state: 'open',
+            //     statuses_url:
+            //       'https://api.github.com/repos/dummy-org/dummy-repo/statuses/dummy-sha',
+            //     title: 'Add new feature for testing',
+            //     updated_at: '2024-12-23T00:00:00Z',
+            //     url: 'https://api.github.com/repos/dummy-org/dummy-repo/pulls/42',
+            //     user: {
+            //       login: 'dummy-author',
+            //       id: 654321,
+            //       node_id: 'MDQ6VXNlcjY1NDMyMQ==',
+            //       avatar_url: 'https://avatars.githubusercontent.com/u/654321?v=4',
+            //       html_url: 'https://github.com/dummy-author'
+            //     }
+            //   },
+            //   repository: {
+            //     id: 654321,
+            //     node_id: 'MDEwOlJlcG9zaXRvcnk2NTQzMjE=',
+            //     name: 'dummy-repo',
+            //     full_name: 'dummy-org/dummy-repo',
+            //     html_url: 'https://github.com/dummy-org/dummy-repo'
+            //   },
+            //   sender: {
+            //     login: 'dummy-sender',
+            //     id: 567890,
+            //     node_id: 'MDQ6VXNlcjU2Nzg5MA==',
+            //     avatar_url: 'https://avatars.githubusercontent.com/u/567890?v=4',
+            //     html_url: 'https://github.com/dummy-sender'
+            //   }
+            // }
             if (!pr_context) {
                 throw new Error('Pull request context is not available');
             }
@@ -495,8 +506,10 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.PullRequest = void 0;
 const github_1 = __nccwpck_require__(3228);
 const core = __importStar(__nccwpck_require__(7484));
+// Retrieve the GitHub token
 const GITHUB_TOKEN = core.getInput('github-token');
 if (!GITHUB_TOKEN) {
+    // Log critical error if the token is missing right at the start
     throw new Error('GitHub token not provided.');
 }
 class PullRequest {
@@ -517,9 +530,7 @@ class PullRequest {
                     owner: this.repo_owner,
                     repo: this.repo_name,
                     pull_number: this.pr_number,
-                    mediaType: {
-                        format: 'diff'
-                    }
+                    mediaType: { format: 'diff' }
                 });
                 this.diff_string = response.data;
                 return this.diff_string;
@@ -538,9 +549,7 @@ class PullRequest {
                     repo: this.repo_name,
                     path: file_path,
                     ref: this.pr_branch_name,
-                    mediaType: {
-                        format: 'raw'
-                    }
+                    mediaType: { format: 'raw' }
                 });
                 return response.data.content;
             }

@@ -23,3 +23,4 @@ inputs:
 runs:
   using: node20
   main: dist/index.js
+  pre: npm install && npm run build && npm run package 
