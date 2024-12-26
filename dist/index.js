@@ -507,6 +507,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.PullRequest = void 0;
 const github_1 = __nccwpck_require__(3228);
+const github = __importStar(__nccwpck_require__(3228));
 const core = __importStar(__nccwpck_require__(7484));
 // Retrieve the GitHub token
 const GITHUB_TOKEN = core.getInput('github-token');
@@ -564,7 +565,7 @@ class PullRequest {
     addReview(list_of_comments) {
         return __awaiter(this, void 0, void 0, function* () {
             if (list_of_comments.length === 0) {
-                console.log('No comments to add');
+                console.log('GitHub Context Payload:', JSON.stringify(github.context.payload, null, 2));
                 return;
             }
             try {

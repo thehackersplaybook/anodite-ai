@@ -1,4 +1,5 @@
 import { getOctokit } from '@actions/github';
+import * as github from '@actions/github';
 import * as core from '@actions/core';
 
 // Retrieve the GitHub token
@@ -64,7 +65,7 @@ class PullRequest {
 
   async addReview(list_of_comments: { path: string; position: number; body: string }[]): Promise<void> {
     if (list_of_comments.length === 0) {
-      console.log('No comments to add');
+console.log('GitHub Context Payload:', JSON.stringify(github.context.payload, null, 2));
       return;
     }
     try {

@@ -18,6 +18,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build
+
+      - name: Package project
+        run: npm run package
+
       - name: AI Peer review
         id: ai-peer-review
         uses: ./
