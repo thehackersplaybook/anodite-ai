@@ -1,0 +1,31 @@
+name: 🤠 ReviewRanger - AI Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  ai-review:
+    runs-on: ubuntu-latest
+    name: 🤠 ReviewRanger Analysis
+    
+    permissions:
+      pull-requests: write
+      contents: read
+      
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build project
+      run: npm run build
+
+    - name: 🤠 ReviewRanger Analysis
+      uses: ./
+      with:
+        openai-key: ${{ secrets.OPENAI_API_KEY }}
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        gpt-model: 'gpt-3.5-turbo'
