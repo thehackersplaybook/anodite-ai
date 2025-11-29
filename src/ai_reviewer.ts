@@ -15,10 +15,16 @@ class AIReviewer {
   }
 
   async getIgnoreList(): Promise<string[]> {
-    const content = await this.pull_request.getFileContent('.reviewignore')
-    return content
-      .split('\n')
-      .filter(line => !line.startsWith('#') && line.trim() !== '')
+    try {
+      const content = await this.pull_request.getFileContent()
+      return content
+        .split('\n')
+        .filter(line => !line.startsWith('#') && line.trim() !== '')
+    } catch (error) {
+      // If .reviewignore file doesn't exist, return empty array (no files to ignore)
+      console.log('No .reviewignore file found, proceeding without ignore patterns')
+      return []
+    }
   }
 
   shouldIgnoreFile(filename: string, files_to_ignore: string[]): boolean {

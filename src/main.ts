@@ -1,30 +1,11 @@
-import { PullRequest } from './pull_request'
-import { OpenAIInterface } from './llm_interface'
-import { AIReviewer } from './ai_reviewer'
-import * as core from '@actions/core'
-import * as github from '@actions/github'
-
-const OPENAI_KEY: string = core.getInput('openai-key')
-const GPT_MODEL: string = core.getInput('gpt-model')
-
-/**
- * Represents a GitHub Pull Request context.
- */
-interface PullRequestContext {
-  title: string
-  body: string
-  // Include more fields from the GitHub API as needed
+// This file is no longer used in the GitHub App version
+// The main logic is now in api/webhook.js
+export function run() {
+  console.log('This function is not used in GitHub App mode');
 }
 
-/**
- * The main function for the action.
- * @returns {Promise<void>} Resolves when the action is complete.
- */
-export async function run(): Promise<void> {
-  try {
-    console.log('Starting PR review action with GPT model:', GPT_MODEL)
-    const pr_context = github.context.payload.pull_request as any;
-    console.log(pr_context);
+export async function runLegacy(): Promise<void> {
+  console.log('Legacy function - not used in GitHub App mode');
     
     // const pr_context = {
     //   action: 'assigned',
@@ -200,34 +181,4 @@ export async function run(): Promise<void> {
     //   }
     // }
 
-    if (!pr_context?.pull_request?.base) {
-      throw new Error('Required pull request context is not available');
-    }
-
-    const pull_request = new PullRequest(pr_context)
-    await pull_request.getDiffString()
-
-    const reviewer = new AIReviewer(pull_request)
-    await reviewer.formatPrChanges()
-
-    console.log('Formatted changes are:', reviewer.formatted_changes)
-
-    const openai_interface = new OpenAIInterface(OPENAI_KEY, GPT_MODEL)
-    const comments_list = await openai_interface.getCommentsonPR({
-      title: pr_context.title,
-      description: pr_context.body,
-      changes: reviewer.formatted_changes
-    })
-
-    console.log('Comments are:', comments_list)
-    await pull_request.addReview(comments_list)
-  } catch (error) {
-    if (error instanceof Error) {
-      console.error(error.message)
-      core.setFailed(error.message)
-    } else {
-      console.error('An unknown error occurred', error)
-      core.setFailed('An unknown error occurred')
-    }
-  }
 }

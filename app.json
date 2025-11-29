@@ -1,0 +1,21 @@
+{
+  "name": "ReviewRanger",
+  "url": "https://github.com/nemilai/anodite-ai",
+  "hook_attributes": {
+    "url": "https://your-app-name.vercel.app/api/webhook"
+  },
+  "redirect_url": "https://your-app-name.vercel.app/setup/complete",
+  "callback_urls": [
+    "https://your-app-name.vercel.app/auth/callback"
+  ],
+  "description": "AI-powered code review assistant that provides intelligent feedback on pull requests",
+  "public": true,
+  "default_events": [
+    "pull_request"
+  ],
+  "default_permissions": {
+    "contents": "read",
+    "metadata": "read",
+    "pull_requests": "write"
+  }
+}
